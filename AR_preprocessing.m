@@ -1,5 +1,5 @@
 function [data_train,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset)
-% Preprocessing of datasets into appropriate training and test sets
+% Preprocessing of datasets into appropriate training and test sets.
 
 if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
     
