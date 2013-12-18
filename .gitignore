@@ -1,6 +1,13 @@
 # test .gitignore to keep the data local and the scripts repo'd
+
+# NOTE Do want to back up the following folders, just not the big files
+# Was T_RO_and_Frontiers/
+*.mat
+*.eps
+*.jpg
+*.png
 Data/
-T_RO_and_Frontiers/
 Results/
 Figures/
 Functions/
+
