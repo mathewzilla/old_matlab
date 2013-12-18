@@ -1,0 +1,6 @@
+# test .gitignore to keep the data local and the scripts repo'd
+Data/
+T_RO_and_Frontiers/
+Results/
+Figures/
+Functions/
