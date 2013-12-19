@@ -1,15 +1,20 @@
-function [data_train,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset)
+function [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset)
 % Preprocessing of datasets into appropriate training and test sets.
 
 if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
+
+% CODE FROM position_XY_feat.m in the first instance
+[ni,nc1,nc2] = size(data); [nt,nn] = size(data{1,1}); % 4,26,101 | 750,2
+
+ri = 1:ni;         % 1 to 4
+rc1 = 1:1:nc1;     % 1 to 26
+rc2 = 1:1:nc2;     % 1 to 101
+nc1 = length(rc1); % 26
+nc2 = length(rc2); % 101
+nc = nc1*nc2;      % total sample number per set - 2626
+rc = 1:nc;         % 1 to 2626
     
-    % CODE FROM position_XY_feat.m in the first instance
-    [ni,nc1,nc2] = size(data); [nt,nn] = size(data{1,1}); % 4 by 26 by
-    % 101. 750 by 2
-    ri = 1:ni; rc1 = 1:1:nc1; rc2 = 1:1:nc2; % was every 4th trial (radius)
-    nc1 = length(rc1); nc2 = length(rc2); nc = nc1*nc2; rc = 1:nc;
-    
-    % onsets
+    % onsets of contact
     for c1 = rc1
         for c2 = rc2
             for i = ri
@@ -22,6 +27,8 @@ if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
     
     % Separated files, not concatenated. ------
     
+    % i determines which set is left out
+    
     for i = 1:3;
         c= 0;
         for c1 = rc1
@@ -31,6 +38,20 @@ if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
                 data_train{i,c} = data{i+1,c1,c2}(rt,1);
                 indRadius(i,c) = c2;
                 indVelocity(i,c) = c1;
+            end
+        end
+    end
+    
+    % concatenated files, if classifier needs it
+    
+    c = 0;
+    for c1 = rc1
+        for c2 = rc2
+            c = c + 1; data_train_c{c} = [];
+            for i = 1:3
+                rt = t(i+1,c1,c2)+(1:750);
+                data_train_c{c} = [data_train_c{c};data{i+1,c1,c2}(rt,1)]; % was vdata, derivative now happend in preprocessing
+
             end
         end
     end
@@ -78,15 +99,15 @@ end
 
 
 
-if dset == 4; % XY table data
-    
-    
-    
-    
-    
-    
-    
-end
+% if dset == 4; % XY table data
+%
+%
+%
+%
+%
+%
+%
+% end
 
 
-return
+%return

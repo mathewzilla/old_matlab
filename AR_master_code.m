@@ -7,8 +7,8 @@
 
 clear all; clc;
 
-% load the four data sets, one at a time.
-for dset = 1:3;
+% load the three (not four) data sets, one at a time.
+for dset = 1;% :3; other numbers don't work yet
     clear data
     if dset == 1;load('Data/data_XY','data');   % XY table
     end;                                        % 4 sets, 26 speeds, 101 radii
@@ -22,26 +22,44 @@ for dset = 1:3;
     end;
     
     % if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
-    % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-compiling
+    % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting
     
     % run old scripts to prepare training/test data, editted with counter measures (leave-one-out)
-    [data_train,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset)
+    % run once first, then change code to run 4 times (leave one out) then
+    % combin/average scores
+
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset);
+    % training data, concatenated training data, test data, radius of
+    % trial, speed of trial | dataset, label of dataset
     
-    % Static
+    %% Insert loop for reducing training set size
+    
+    
+    % RUN CLASSIFIERS
+    %% Static
     % Specific preprocessing
     
     
-    % Freq
+    %% Freq
     
-    % Temp
+    %% Temp
     
-    % Feat
-    AR_train_all('static')
+    %% Feat
+    %  AR_train_all('static')
     
-    % MAP
+    %% MAP
     % Specific preprocessing
     % Concatenate files
     
-    % GP
+    %     AR_train('SNB'); New universal code?
+    %   Old code
+    d = linspace(-0.1,0.1,501); d = d(:);%d = linspace(-1.5,3,451); d = d(:);
+    ns = 10; %ns = []; % smooth over 10 samples
+    clear logl;
+    for c = 1:sub
+        logl{c} = train_SNB(data_train{c},d,ns);
+    end
+    
+    %% GP
     
 end % for all datasets
