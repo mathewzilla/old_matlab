@@ -1,5 +1,5 @@
 % This code runs the old classifiers on the 3 different robot datasets,
-% under all the relevant conditions for publication in Evans et al 2013
+% under all the relevant conditions for publication in Evans et al 2014
 % 'State of the art in whisker-based object localisation'.
 % Puts all of the outputs in an array for easy copying into the paper.
 % AR_figs.m generates the publcation quality figures. See README.txt for
@@ -34,8 +34,10 @@ for dset = 1;% :3; other numbers don't work yet
     
     %% Insert loop for reducing training set size
     
+  
     
-    % RUN CLASSIFIERS
+    
+    %% %% RUN CLASSIFIERS
     %% Static
     % Specific preprocessing
     
@@ -53,11 +55,11 @@ for dset = 1;% :3; other numbers don't work yet
     
     %     AR_train('SNB'); New universal code?
     %   Old code
-    d = linspace(-0.1,0.1,501); d = d(:);%d = linspace(-1.5,3,451); d = d(:);
-    ns = 10; %ns = []; % smooth over 10 samples
+    d = linspace(-0.1,0.1,501); d = d(:); % set params for histogram, then rotate
+    ns = 10;                              % smooth over 10 samples
     clear logl;
-    for c = 1:sub
-        logl{c} = train_SNB(data_train{c},d,ns);
+    for c = 1:length(data_train_c);
+        logl{c} = AR_train_SNB(data_train_c{c},d,ns);
     end
     
     %% GP
