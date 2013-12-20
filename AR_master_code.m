@@ -24,13 +24,17 @@ for dset = 1;% :3; other numbers don't work yet
     % if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
     % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting
     
-    % run old scripts to prepare training/test data, editted with counter measures (leave-one-out)
-    % run once first, then change code to run 4 times (leave one out) then
-    % combin/average scores
 
-    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset);
+    smoo = 1; % smooth the data 0|1
+    deriv = 1; % take first of second derivatives 0 | 1 | 2
+   
+    %% PREPROCESS DATA INTO TRAINING + TEST SETS
+    
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
     % training data, concatenated training data, test data, radius of
     % trial, speed of trial | dataset, label of dataset
+    
+    
     
     %% Insert loop for reducing training set size
     
@@ -53,7 +57,9 @@ for dset = 1;% :3; other numbers don't work yet
     % Specific preprocessing
     % Concatenate files
     
-    %     AR_train('SNB'); New universal code?
+    % TRAINING
+    
+    %   TO DO:  AR_train('SNB'); New universal code?
     %   Old code
     d = linspace(-0.1,0.1,501); d = d(:); % set params for histogram, then rotate
     ns = 10;                              % smooth over 10 samples
@@ -61,6 +67,18 @@ for dset = 1;% :3; other numbers don't work yet
     for c = 1:length(data_train_c);
         logl{c} = AR_train_SNB(data_train_c{c},d,ns);
     end
+    
+    % TESTING
+    
+    % Old code
+    clear logp;
+    for c = 1:length(data_train_c);
+        for c1 = 1:length(data_train_c);
+            logp{c}(c1) = AR_test_SNB(data_test{c},d,logl{c1});
+        end
+        [ig,class(c)] = max(squeeze(logp{c}),[],2);
+    end
+
     
     %% GP
     

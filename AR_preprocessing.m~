@@ -25,14 +25,11 @@ rc = 1:nc;         % 1 to 2626
                
                 %% OPTION: Take derivatives
                 if deriv == 1;
-                    data{i,c1,c2} = diff(data{i,c1,c2});
-                    data{i,c1,c2}(nt,:) = data{i,c1,c2}(nt-1,:); % Fill in missing end value
+                    vdata{i,c1,c2} = diff(data{i,c1,c2});
                 end
                 
                 if deriv == 2;
-                    data{i,c1,c2} = diff(diff(data{i,c1,c2}));
-                    data{i,c1,c2}(nt-1,:) = data{i,c1,c2}(nt-2,:); % Fill in missing end value
-                    data{i,c1,c2}(nt,:) = data{i,c1,c2}(nt-1,:);
+                    vdata{i,c1,c2} = diff(diff(data{i,c1,c2}));
                 end
                 
                 %% OPTION: Smooth

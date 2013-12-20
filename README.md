@@ -15,6 +15,23 @@ Data (in own folder) consists of 4 separate sets from 3 different robots, to dat
 4. Collated.mat - Scratchbot data. Old 'expt1', saw/sin whisker movement, 11 radii [90-190mm], previously unpublished.
 
 
+HOW THE CODE WORKS ATM
+
+User defines dataset to use (1-4) or lets the code loop through datasets
+
+Data is loaded
+
+User chooses whether to smooth or differentiate the data (will run all conditions and select best for paper)
+
+PREPROCESSING seperates the data into training and test sets, providing (optionally) smooth or diff'd data in seperated and concatenated files (diff classifiers need different things)
+
+ATM the code runs once, using an arbitrary file as the test data. Need to change code to run 4 times (leave one out) then combine/average scores
+
+Training and testing occurs, set up/called using the old code. 
+
+TO DO: This could be editted so a single classifier is called with a single script. User could then decide which classifier to try. This would return scores, times for training/testing.
+    
+
 
 TO DO: 
 
@@ -31,3 +48,5 @@ v) Get all classifiers working on another dataset
 vi) Get all classifiers working on all datasets
 
 vii) Publish code and data so that others can contribute classifiers
+
+viii) Decide on preprocessing/ data handling for paper, inc. 2 axes or just one?

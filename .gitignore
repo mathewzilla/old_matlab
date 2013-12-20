@@ -2,6 +2,7 @@
 
 # NOTE Do want to back up the following folders, just not the big files
 # Was T_RO_and_Frontiers/
+# Functions/
 *.mat
 *.eps
 *.jpg
@@ -9,5 +10,5 @@
 Data/
 Results/
 Figures/
-# Functions/
+
 
