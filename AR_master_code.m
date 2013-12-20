@@ -11,75 +11,57 @@ clear all; clc;
 for dset = 1;% :3; other numbers don't work yet
     clear data
     if dset == 1;load('Data/data_XY','data');   % XY table
+        fprintf('Loading XY table data\n')
     end;                                        % 4 sets, 26 speeds, 101 radii
     
     if dset == 2;load('Data/ScratchPeaksXY');   % Scratchbot (ROBIO expts)
         data = ScratchPeaksXY; clear ScratchPeaksXY;% 3 speeds, 3 radii, 8 contacts
+        fprintf('Loading Scratchbot data\n')
     end;
     
     if dset == 3;load('Data/roombaRadiusXY');   % Crunchbot.
         data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
+        fprintf('Loading roomba data\n')
     end;
-    
-    % if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
-    % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting
-    
 
     smoo = 1; % smooth the data 0|1
     deriv = 1; % take first of second derivatives 0 | 1 | 2
    
     %% PREPROCESS DATA INTO TRAINING + TEST SETS
     
+     fprintf('Preprocessing... \n')
     [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
     % training data, concatenated training data, test data, radius of
     % trial, speed of trial | dataset, label of dataset
-    
-    
-    
-    %% Insert loop for reducing training set size
-    
-  
-    
-    
+   
     %% %% RUN CLASSIFIERS
-    %% Static
-    % Specific preprocessing
     
+    %% Static
     
     %% Freq
     
     %% Temp
     
     %% Feat
-    %  AR_train_all('static')
     
     %% MAP
-    % Specific preprocessing
-    % Concatenate files
-    
-    % TRAINING
-    
-    %   TO DO:  AR_train('SNB'); New universal code?
-    %   Old code
-    d = linspace(-0.1,0.1,501); d = d(:); % set params for histogram, then rotate
-    ns = 10;                              % smooth over 10 samples
-    clear logl;
-    for c = 1:length(data_train_c);
-        logl{c} = AR_train_SNB(data_train_c{c},d,ns);
-    end
-    
-    % TESTING
-    
-    % Old code
-    clear logp;
-    for c = 1:length(data_train_c);
-        for c1 = 1:length(data_train_c);
-            logp{c}(c1) = AR_test_SNB(data_test{c},d,logl{c1});
-        end
-        [ig,class(c)] = max(squeeze(logp{c}),[],2);
-    end
+    % TRAIN AND TEST CLASSIFIER
+     fprintf('Running Naive Bayes classifier ')
+    [class,t_train,t_test] = AR_run_SNB(data_train_c,data_test);
 
-    
+    % COMPUTE RESULTS
+     fprintf('Computing results \n')
+    [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class);
+
+    t_train
+    t_test
+    stat
     %% GP
     
 end % for all datasets
+
+    %% TO DO Insert loop for reducing training set size
+    %% Add 4th dataset    
+    % if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
+    % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting
+    

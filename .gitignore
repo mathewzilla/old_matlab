@@ -7,6 +7,7 @@
 *.eps
 *.jpg
 *.png
+*.m~
 Data/
 Results/
 Figures/
