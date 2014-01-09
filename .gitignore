@@ -8,7 +8,7 @@
 *.jpg
 *.png
 *.m~
-Data/
+AR_Data/
 Results/
 Figures/
 
