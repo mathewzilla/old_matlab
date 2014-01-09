@@ -10,16 +10,16 @@ clear all; clc;
 % load the three (not four) data sets, one at a time.
 for dset = 1;% :3; other numbers don't work yet
     clear data
-    if dset == 1;load('Data/data_XY','data');   % XY table
+    if dset == 1;load('AR_Data/data_XY','data');   % XY table
         fprintf('Loading XY table data\n')
     end;                                        % 4 sets, 26 speeds, 101 radii
     
-    if dset == 2;load('Data/ScratchPeaksXY');   % Scratchbot (ROBIO expts)
+    if dset == 2;load('AR_Data/ScratchPeaksXY');   % Scratchbot (ROBIO expts)
         data = ScratchPeaksXY; clear ScratchPeaksXY;% 3 speeds, 3 radii, 8 contacts
         fprintf('Loading Scratchbot data\n')
     end;
     
-    if dset == 3;load('Data/roombaRadiusXY');   % Crunchbot.
+    if dset == 3;load('AR_Data/roombaRadiusXY');   % Crunchbot.
         data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
         fprintf('Loading roomba data\n')
     end;
