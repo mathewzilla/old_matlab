@@ -10,30 +10,33 @@ clear all; clc;
 % load the three (not four) data sets, one at a time.
 for dset = 1;% :3; other numbers don't work yet
     clear data
-    if dset == 1;load('AR_Data/data_XY','data');   % XY table
+    if dset == 1;
         fprintf('Loading XY table data\n')
+        load('AR_Data/data_XY','data');   % XY table
     end;                                        % 4 sets, 26 speeds, 101 radii
     
-    if dset == 2;load('AR_Data/ScratchPeaksXY');   % Scratchbot (ROBIO expts)
-        data = ScratchPeaksXY; clear ScratchPeaksXY;% 3 speeds, 3 radii, 8 contacts
+    if dset == 2;
         fprintf('Loading Scratchbot data\n')
+        load('AR_Data/ScratchPeaksXY');   % Scratchbot (ROBIO expts)
+        data = ScratchPeaksXY; clear ScratchPeaksXY;% 3 speeds, 3 radii, 8 contacts
     end;
     
-    if dset == 3;load('AR_Data/roombaRadiusXY');   % Crunchbot.
-        data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
+    if dset == 3;
         fprintf('Loading roomba data\n')
+        load('AR_Data/roombaRadiusXY');   % Crunchbot.
+        data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
     end;
-
-    smoo = 1; % smooth the data 0|1
-    deriv = 1; % take first of second derivatives 0 | 1 | 2
-   
+    
+    smoo = 0; % smooth the data 0|1
+    deriv = 0; % take first of second derivatives 0 | 1 | 2 . ATM AR_train_feat.m doesn't work with derivs
+    
     %% PREPROCESS DATA INTO TRAINING + TEST SETS
     
-     fprintf('Preprocessing... \n')
+    fprintf('Preprocessing... \n')
     [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
     % training data, concatenated training data, test data, radius of
     % trial, speed of trial | dataset, label of dataset
-   
+    
     %% %% RUN CLASSIFIERS
     
     %% Static
@@ -43,16 +46,28 @@ for dset = 1;% :3; other numbers don't work yet
     %% Temp
     
     %% Feat
+    % TRAIN AND TEST CLASSIFIER
+    fprintf('Running feature based classifier ')
+    %dims = [size(data,2), size(data,3)]
+    [class,t_train,t_test] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
+    
+    % COMPUTE RESULTS
+    fprintf('Computing results \n')
+    [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class);
+    
+    t_train
+    t_test
+    stat
     
     %% MAP
     % TRAIN AND TEST CLASSIFIER
-     fprintf('Running Naive Bayes classifier ')
+    fprintf('Running Naive Bayes classifier ')
     [class,t_train,t_test] = AR_run_SNB(data_train_c,data_test);
-
+    
     % COMPUTE RESULTS
-     fprintf('Computing results \n')
+    fprintf('Computing results \n')
     [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class);
-
+    
     t_train
     t_test
     stat
@@ -60,8 +75,7 @@ for dset = 1;% :3; other numbers don't work yet
     
 end % for all datasets
 
-    %% TO DO Insert loop for reducing training set size
-    %% Add 4th dataset    
-    % if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
-    % data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting
-    
+%% TO DO Insert loop for reducing training set size
+%% Add 4th dataset
+% if dset == 4;load('Data/Collated.mat'); % Scratchbot (old expt1, saw/sin, 90-190mm, unpublished)
+% data = expt1.sawradial90deg.xy % DATA NOT READY. Needs re-sorting

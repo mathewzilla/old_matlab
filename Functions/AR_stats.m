@@ -2,8 +2,8 @@
 % the accuracy scores
 function  [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class)
 
-outR = empty(1,length(indRadius));
-outV = empty(1,length(indRadius));
+outR = zeros(1,length(indRadius));
+outV = zeros(1,length(indRadius));
 for i = 1:length(indRadius);
     outR(i) = indRadius(1,class(i));
     outV(i) = indVelocity(1,class(i));

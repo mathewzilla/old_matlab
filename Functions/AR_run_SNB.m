@@ -1,5 +1,5 @@
 % AR_run_SNB script to run the Naive Bayes classifer. Provides class
-% predicitons and clocked times
+% predictions and clocked times
 
 function [class,t_train,t_test] = AR_run_SNB(data_train_c,data_test);
 %% TRAINING
