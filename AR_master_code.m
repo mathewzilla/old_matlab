@@ -27,10 +27,10 @@ for dset = 1;% :3; other numbers don't work yet
         data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
     end;
     
-    smoo = 0; % smooth the data 0|1
-    deriv = 0; % take first of second derivatives 0 | 1 | 2 . ATM AR_train_feat.m doesn't work with derivs
     
     %% PREPROCESS DATA INTO TRAINING + TEST SETS
+    smoo = 0; % smooth the data 0|1
+    deriv = 0; % take first of second derivatives 0 | 1 | 2 . ATM AR_train_feat.m doesn't work with derivs
     
     fprintf('Preprocessing... \n')
     [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
@@ -44,33 +44,50 @@ for dset = 1;% :3; other numbers don't work yet
     %% Freq
     
     %% Temp
+    % TRAIN AND TEST CLASSIFIER
+    fprintf('Running template based classifier ')
+    %dims = [size(data,2), size(data,3)]
+    [class,t_train{1},t_test{1}] = AR_run_temp(data_train,data_test,indRadius,indVelocity);
+    
+    % COMPUTE RESULTS
+    fprintf('Computing results \n')
+    [outR,outV,errorR,errorV,stat{1}] = AR_stats(indRadius,indVelocity,class);
+    
+    t_train{1}
+    t_test{1}
+    stat{1}
+    
     
     %% Feat
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running feature based classifier ')
     %dims = [size(data,2), size(data,3)]
-    [class,t_train,t_test] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
+    [class,t_train{1},t_test{1}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
-    [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class);
+    [outR,outV,errorR,errorV,stat{1}] = AR_stats(indRadius,indVelocity,class);
     
-    t_train
-    t_test
-    stat
+    t_train{1}
+    t_test{1}
+    stat{1}
     
     %% MAP
+    smoo = 1; deriv = 1; 
+    fprintf('Preprocessing... \n')
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
+   
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running Naive Bayes classifier ')
-    [class,t_train,t_test] = AR_run_SNB(data_train_c,data_test);
+    [class,t_train{2},t_test{2}] = AR_run_SNB(data_train_c,data_test);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
-    [outR,outV,errorR,errorV,stat] = AR_stats(indRadius,indVelocity,class);
+    [outR,outV,errorR,errorV,stat{2}] = AR_stats(indRadius,indVelocity,class);
     
-    t_train
-    t_test
-    stat
+    t_train{2}
+    t_test{2}
+    stat{2}
     %% GP
     
 end % for all datasets
