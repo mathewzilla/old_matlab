@@ -1,4 +1,4 @@
-% test_feature   Feature based classification
+% AR_test_feat   Feature based classification
 %
 %   R = test_feature(data,coeffs)
 %   Takes in a data file, and coefficients for an equation generated in 

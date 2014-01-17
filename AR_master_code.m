@@ -47,7 +47,8 @@ for dset = 1;% :3; other numbers don't work yet
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running template based classifier ')
     %dims = [size(data,2), size(data,3)]
-    [class,t_train{1},t_test{1}] = AR_run_temp(data_train,data_test,indRadius,indVelocity);
+    method = 1;
+    [class,t_train{1},t_test{1}] = AR_run_temp(data_train,data_test,method);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
