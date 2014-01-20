@@ -49,6 +49,6 @@ for i = 1:length(data_test);
 end;
 % --------------------------------------------------------
 class(1,:) = radius;
-class(2,:) = speed;
+class(2,:) = speed; % ONLY ONE THAT MAKES AN EXPLICIT PREDICTION OF SPEED
 
 t_test = toc;
