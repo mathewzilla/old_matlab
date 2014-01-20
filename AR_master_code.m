@@ -39,16 +39,12 @@ for dset = 1;% :3; other numbers don't work yet
     
     %% %% RUN CLASSIFIERS
     
-    %% Static
-    
-    %% Freq
-    
     %% Temp
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running template based classifier ')
     %dims = [size(data,2), size(data,3)]
     method = 1;
-    [class,t_train{1},t_test{1}] = AR_run_temp(data_train,data_test,method);
+    [class,t_train{1},t_test{1}] = AR_run_temp(data_train,data_test,indRadius,indVelocity,method);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
@@ -63,24 +59,7 @@ for dset = 1;% :3; other numbers don't work yet
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running feature based classifier ')
     %dims = [size(data,2), size(data,3)]
-    [class,t_train{1},t_test{1}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
-    
-    % COMPUTE RESULTS
-    fprintf('Computing results \n')
-    [outR,outV,errorR,errorV,stat{1}] = AR_stats(indRadius,indVelocity,class);
-    
-    t_train{1}
-    t_test{1}
-    stat{1}
-    
-    %% MAP
-    smoo = 1; deriv = 1; 
-    fprintf('Preprocessing... \n')
-    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
-   
-    % TRAIN AND TEST CLASSIFIER
-    fprintf('Running Naive Bayes classifier ')
-    [class,t_train{2},t_test{2}] = AR_run_SNB(data_train_c,data_test);
+    [class,t_train{2},t_test{2}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
@@ -89,6 +68,28 @@ for dset = 1;% :3; other numbers don't work yet
     t_train{2}
     t_test{2}
     stat{2}
+    
+    %% MAP
+    smoo = 1; deriv = 1; 
+    fprintf('Preprocessing... \n')
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
+   
+    % TRAIN AND TEST CLASSIFIER
+    fprintf('Running Naive Bayes classifier ')
+    [class,t_train{3},t_test{3}] = AR_run_SNB(data_train_c,data_test);
+    
+    % COMPUTE RESULTS
+    fprintf('Computing results \n')
+    [outR,outV,errorR,errorV,stat{3}] = AR_stats(indRadius,indVelocity,class);
+    
+    t_train{3}
+    t_test{3}
+    stat{3}
+        
+    %% Static
+    
+    %% Freq
+    
     %% GP
     
 end % for all datasets

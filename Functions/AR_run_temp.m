@@ -1,7 +1,7 @@
 % AR_run_temp script to run the template based classifer. Provides class
 % predictions and clocked times
 
-function [class,t_train,t_test] = AR_run_temp(data_train,data_test,method);
+function [class,t_train,t_test] = AR_run_temp(data_train,data_test,indRadius,indVelocity,method);
 %% TRAINING
 %   Old code
 tic
@@ -25,8 +25,8 @@ end
 class = cell2mat(class);
     
 
-radius = class(1,:);
-speed = class(2,:);
+radius = indRadius(1,class(:));
+speed = indVelocity(1,class(:));
 
 % --------------------------------------------------------
 class(1,:) = radius;
