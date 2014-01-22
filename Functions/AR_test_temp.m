@@ -7,12 +7,18 @@
 
 function class = AR_test_temp(data_test,templates,method); 
 
+% Included option for template 'method'
+% 1 = low pass filtered
+% 2 = average template
+% 3 = Velocity
+% 4 = Velocity of single trial
+% 5 = Frequency template
+
 %% format template of test data, then find sum squared error
 x = data_test; nx = length(x); rx = 1:nx; 
 [nc ng] = size(templates); rc = 1:nc;  
 
-% format templates of test
-% Filter as for training set
+%% Low pass filter
 if method == 1;            % LOW PASS FILTER
   f = 1000;                % Sample rate. 
   fNorm = 20/(f/2);        % Low pass cutoff at 20Hz.
@@ -32,7 +38,8 @@ if method == 1;            % LOW PASS FILTER
   % class = indRadius(in);
 end
 
-if method == 2;      % AVERAGE TEMPLATE
+%% Average template
+if method == 2;      
   temp = x;
 
   % template classifier using RMS error
@@ -46,21 +53,8 @@ if method == 2;      % AVERAGE TEMPLATE
   % class = indRadius(in);
 end
 
-if method == 3;      % DTW (DIDN"T DO IT IN THE END)
-  temp = x;
-
-  % template classifier using RMS error
-  [nt nn] = size(x); 
-  for j = rc         % for 1:676 (26*26)
-    Rsq(j) = sum(abs(templates(j,:) - temp'));
-  end
-
-  [ig,in] = min(Rsq); 
-  class = in; 
-  % class = indRadius(in);
-end
-
-if method == 4;      % VELOCITY FROM AVERAGE TRIAL
+%% First derivative of average template REDUNDANT?
+if method == 3;      
   temp = diff(x);
 
   % template classifier using RMS error
@@ -70,10 +64,11 @@ if method == 4;      % VELOCITY FROM AVERAGE TRIAL
   end
 
   [ig,in] = min(Rsq); 
-  class = indRadius(in);
+  class = in;
 end
 
-if method == 5;      % VELOCITY OF A SINGLE TRIAL
+%% First derivative of single trial REDUNDANT?
+if method == 4;      
   temp = diff(x);
   
   % template classifier using RMS error
@@ -87,23 +82,11 @@ if method == 5;      % VELOCITY OF A SINGLE TRIAL
   % class = indRadius(in);
 end
 
-if method == 6;     % CORRELTAION COEFFICIENT
-  temp = x;
-
-  % template classifier using corr coeff
-  [nt nn] = size(x); 
-  for j = rc;       % for 1:676 (26*26)
-    Cor(j) = corr(temp,templates(j,:)'); 
-  end; 
-  [k in] = max(Cor); 
-  class = in; 
-  % class = indRadius(in); 
-
-end
-
-if method == 7;
+%% Frequency spectrum template
+if method == 5;
   temp =  abs(real(fft(x(501:750))));
-  
+  temp = smooth(smooth(temp));
+  temp(1) = 0;
   % template classifier using RMS error
   [nt nn] = size(x); 
   for j = rc         % for 1:676 (26*26)
@@ -111,5 +94,5 @@ if method == 7;
   end
 
   [ig,in] = min(Rsq); 
-  c = in; %indRadius(in);
+  class = in; %indRadius(in);
 end

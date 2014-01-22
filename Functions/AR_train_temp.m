@@ -13,13 +13,11 @@
 
 function templates = AR_train_temp(data_train,method)
 
-% Include option for
-% template 'method'
+% Included option for template 'method'
 % 1 = low pass filtered
 % 2 = average template
 % 3 = Velocity
-% 4 = Velocity of single
-% trial
+% 4 = Velocity of single trial
 % 5 = Frequency template
 
 [nt nn] = size(data_train); 
@@ -123,9 +121,9 @@ if method == 5;
         end
         
         x(1) = 0;
-        if smoo;
+%         if smoo;
             x = smooth(smooth(x));
-        end
+%         end
         templates(i,:) = x;
     end
 end

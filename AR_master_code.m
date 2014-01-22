@@ -54,12 +54,11 @@ for dset = 1;% :3; other numbers don't work yet
     t_test{1}
     stat{1}
     
-    
-    %% Feat
-    % TRAIN AND TEST CLASSIFIER
-    fprintf('Running feature based classifier ')
+    %% Freq
+    fprintf('Running frequency template based classifier ')
+    method = 5; % Frequency template
     clear class;
-    [class,t_train{2},t_test{2}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
+    [class,t_train{2},t_test{2}] = AR_run_temp(data_train,data_test,indRadius,indVelocity,method);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
@@ -69,15 +68,11 @@ for dset = 1;% :3; other numbers don't work yet
     t_test{2}
     stat{2}
     
-    %% MAP
-    smoo = 1; deriv = 1;
-    fprintf('Preprocessing for NB classifier... \n')
-    clear class;
-    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
-    
+    %% Feat
     % TRAIN AND TEST CLASSIFIER
-    fprintf('Running Naive Bayes classifier ')
-    [class,t_train{3},t_test{3}] = AR_run_SNB(data_train_c,data_test);
+    fprintf('Running feature based classifier ')
+    clear class;
+    [class,t_train{3},t_test{3}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
@@ -87,10 +82,16 @@ for dset = 1;% :3; other numbers don't work yet
     t_test{3}
     stat{3}
     
-    %% Static
-    fprintf('Running static beam equation based classifier ')
+    %% MAP
+    smoo = 1; deriv = 1;
+    fprintf('Preprocessing for NB classifier... \n')
     clear class;
-    [class,t_train,t_test] = AR_run_static(data_train,data_test,indRadius,indVelocity);
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
+    
+    % TRAIN AND TEST CLASSIFIER
+    fprintf('Running Naive Bayes classifier ')
+    [class,t_train{4},t_test{4}] = AR_run_SNB(data_train_c,data_test);
+    
     % COMPUTE RESULTS
     fprintf('Computing results \n')
     [outR,outV,errorR,errorV,stat{4}] = AR_stats(indRadius,indVelocity,class);
@@ -99,9 +100,20 @@ for dset = 1;% :3; other numbers don't work yet
     t_test{4}
     stat{4}
     
-    %% Freq
+    %% Static
+    fprintf('Running static beam equation based classifier ')
+    clear class;
+    [class,t_train{5},t_test{5}] = AR_run_static(data_train,data_test,indRadius,indVelocity);
+    % COMPUTE RESULTS
+    fprintf('Computing results \n')
+    [outR,outV,errorR,errorV,stat{5}] = AR_stats(indRadius,indVelocity,class);
+    
+    t_train{5}
+    t_test{5}
+    stat{5}
     
     %% GP
+    
     
 end % for all datasets
 

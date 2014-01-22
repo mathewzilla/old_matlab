@@ -1,7 +1,17 @@
 % AR_run_temp script to run the template based classifer. Provides class
 % predictions and clocked times
 
+% Included option for template 'method'
+% 1 = low pass filtered
+% 2 = average template
+% 3 = Velocity
+% 4 = Velocity of single trial
+% 5 = Frequency template
+
+
 function [class,t_train,t_test] = AR_run_temp(data_train,data_test,indRadius,indVelocity,method);
+
+
 %% TRAINING
 %   Old code
 tic
