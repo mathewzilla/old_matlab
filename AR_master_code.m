@@ -101,16 +101,21 @@ for dset = 2;% :3; other numbers don't work yet
     stat{4}
     
     %% Static
+    smoo = 0; deriv = 0;
+    fprintf('Preprocessing for static classifier... \n')
+    clear class;
+    [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
+    
     fprintf('Running static beam equation based classifier ')
     clear class;
     [class,t_train{5},t_test{5}] = AR_run_static(data_train,data_test,indRadius,indVelocity,dset);
     % COMPUTE RESULTS
     fprintf('Computing results \n')
-    [outR,outV,errorR,errorV,stat{5}] = AR_stats(indRadius,indVelocity,class);
+   % [outR,outV,errorR,errorV,stat{5}] = AR_stats(indRadius,indVelocity,class);
     
     t_train{5}
     t_test{5}
-    stat{5}
+    %stat{5}
     
     %% GP
     

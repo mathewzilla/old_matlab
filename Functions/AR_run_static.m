@@ -8,13 +8,10 @@ tic
 fprintf(' ... Training ... ')
 %% Generate protraction angle (theta) for each R-S pair
 [theta,eCoeffs] = AR_ProtractionAngle(dset);
-
-
 t_train = toc;
 
 %% TESTING
 
-% Old code
 tic
 fprintf('Testing ... \n')
 % testing: static beam equation based classifier  ----------------------------
@@ -24,15 +21,20 @@ for c = 1:length(data_test);
     
 end
 class = cell2mat(class);
-% Normalising the output
-radius = max(class)-class;    % Output is wrong way round initially
-radius = radius./max(radius); % Normalise to 1
-radius = (radius*100) +1;     % Scale up to 1-101 range
-radius = round(radius);       % Round to nearest integer (for comparison with other methods)
 
-class(1,:) = radius;
-class(2,:) = 13*ones(1,2626); % NO SPEED OUTPUT FOR THIS CLASSIFIER
+if dset == 1;
+    % Normalising the output
+    radius = max(class)-class;    % Output is wrong way round initially
+    radius = radius./max(radius); % Normalise to 1
+    radius = (radius*100) +1;     % Scale up to 1-101 range
+    radius = round(radius);       % Round to nearest integer (for comparison with other methods)
+    
+    class(1,:) = radius;
+    class(2,:) = 13*ones(1,2626); % NO SPEED OUTPUT FOR THIS CLASSIFIER
+end
 
+class(1,:) = class;
+class(2,:) = 2 * ones(1,9);
 t_test = toc;
 
 
