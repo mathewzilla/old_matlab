@@ -1,14 +1,14 @@
 % AR_run_feat script to run the feature based classifer. Provides class
 % predictions and clocked times
 
-function [class,t_train,t_test] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
+function [class,t_train,t_test] = AR_run_feat(data_train,data_test,indRadius,indVelocity,dset);
 %% TRAINING
 
 %   Old code
 
 tic
 fprintf(' ... Training ... ')
-out = AR_train_feat(data_train,indRadius,indVelocity);
+out = AR_train_feat(data_train,indRadius,indVelocity,dset);
 t_train = toc;
 
 coeffs = out{1,1};

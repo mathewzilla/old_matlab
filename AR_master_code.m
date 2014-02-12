@@ -8,7 +8,7 @@
 clear all; clc;
 
 % load the three (not four) data sets, one at a time.
-for dset = 1;% :3; other numbers don't work yet
+for dset = 2;% :3; other numbers don't work yet
     clear data
     if dset == 1;
         fprintf('Loading XY table data\n')
@@ -31,7 +31,7 @@ for dset = 1;% :3; other numbers don't work yet
     %% PREPROCESS DATA INTO TRAINING + TEST SETS
     smoo = 0; % smooth the data 0|1
     deriv = 0; % take first of second derivatives 0 | 1 | 2 . ATM AR_train_feat.m doesn't work with derivs
-    edi
+
     fprintf('Preprocessing for template and feature based classifiers... \n')
     [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
     % training data, concatenated training data, test data, radius of
@@ -72,7 +72,7 @@ for dset = 1;% :3; other numbers don't work yet
     % TRAIN AND TEST CLASSIFIER
     fprintf('Running feature based classifier ')
     clear class;
-    [class,t_train{3},t_test{3}] = AR_run_feat(data_train,data_test,indRadius,indVelocity);
+    [class,t_train{3},t_test{3}] = AR_run_feat(data_train,data_test,indRadius,indVelocity,dset);
     
     % COMPUTE RESULTS
     fprintf('Computing results \n')
@@ -103,7 +103,7 @@ for dset = 1;% :3; other numbers don't work yet
     %% Static
     fprintf('Running static beam equation based classifier ')
     clear class;
-    [class,t_train{5},t_test{5}] = AR_run_static(data_train,data_test,indRadius,indVelocity);
+    [class,t_train{5},t_test{5}] = AR_run_static(data_train,data_test,indRadius,indVelocity,dset);
     % COMPUTE RESULTS
     fprintf('Computing results \n')
     [outR,outV,errorR,errorV,stat{5}] = AR_stats(indRadius,indVelocity,class);

@@ -41,7 +41,7 @@ ii) Get timer measurement working TICK
 
 iii) Get other classifiers working again TICK
 
-iv) Get one classifier working on another dataset
+iv) Get one classifier working on another dataset TICK
 
 v) Get all classifiers working on another dataset
 

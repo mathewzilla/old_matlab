@@ -15,8 +15,7 @@ if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
     rc = 1:nc;         % 1 to 2626
     subs = 1:3;        % subset for training set USE crossvalind INSTEAD
     
-    %% onsets of contact. SEEMS REDUNDANT BUT KEEP IT AS MAY BE USEFUL FOR
-    % OTHER DATASETS
+    %% onsets of contact. SEEMS REDUNDANT BUT KEEP IT AS IS USEFUL FOR OTHER SETS
     for c1 = rc1
         for c2 = rc2
             for i = ri
@@ -98,7 +97,7 @@ end
 
 if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
     % CODE FROM position_XY_feat.m in the first instance
-    [nc1,nc2,ni] = size(data); [nt,nn] = size(data{1,1}); % 3,3,8 | 2001,2
+    [nc1,nc2,ni] = size(data); [nt(1),nn] = size(data{1,1}); % 3,3,8 | 2001,2
     
     ri = 1:ni;         % 1 to 8 contacts
     rc1 = 1:1:nc1;     % 1 to 3 radii
@@ -109,25 +108,30 @@ if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
     rc = 1:nc;         % 1 to 9
     subs = 1:7;        % subset for training set
     st = 1000;         % length of peak-aligned segment
-    
-     % OTHER DATASETS
+
+    [nt(2),nn] = size(data{1,2});
+    [nt(3),nn] = size(data{1,3});
     for c1 = rc1
         for c2 = rc2
             for i = ri
                  t(c1,c2,i) = min(find(data{c1,c2,i}(:,1)>0.4))-100;
-                
-                
+                % Pad with zeros as contacts are of different lengths
+                if c2 >= 2;
+                data{c1,c2,i}(nt(c2):nt(1)-1,:)  = zeros(nt(1)-nt(c2),2);
+                end
                 
                 %% OPTION: Take derivatives
                 if deriv == 1;
                     data{c1,c2,i} = diff(data{c1,c2,i});
-                    data{c1,c2,i}(nt,:) = data{c1,c2,i}(nt-1,:); % Fill in missing end value
+                    data{c1,c2,i}(nt(1)-1,:) = data{c1,c2,i}(nt(1)-2,:);% Fill in missing end value
+                    data{c1,c2,i}(nt(1),:) = data{c1,c2,i}(nt(1)-1,:);  
                 end
                 
                 if deriv == 2;
                     data{c1,c2,i} = diff(diff(data{c1,c2,i}));
-                    data{c1,c2,i}(nt-1,:) = data{c1,c2,i}(nt-2,:); % Fill in missing end value
-                    data{c1,c2,i}(nt,:) = data{c1,c2,i}(nt-1,:);
+                    data{c1,c2,i}(nt(1)-2,:) = data{c1,c2,i}(nt(1)-3,:);% Fill in missing end value
+                    data{c1,c2,i}(nt(1)-1,:) = data{c1,c2,i}(nt(1)-2,:); 
+                    data{c1,c2,i}(nt(1),:) = data{c1,c2,i}(nt(1)-1,:);
                 end
                 
                 %% OPTION: Smooth
@@ -149,9 +153,8 @@ if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
         for c1 = rc1
             for c2 = rc2
                 c = c+1;
-%                 rt = t(c1,c2,j+1)+(1:nt); % Supposed to provide a
-%                 peak-aligned segment, but it's not working 12.2.14
-                data_train{j,c} = data{c1,c2,j+1}(:,1); % was (rt,1)
+                 rt = t(c1,c2,j+1)+(1:st); 
+                data_train{j,c} = data{c1,c2,j+1}(rt,1); % was (rt,1)
                 indRadius(j,c) = c2;
                 indVelocity(j,c) = c1;
             end
@@ -165,8 +168,8 @@ if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
         for c2 = rc2
             c = c + 1; data_train_c{c} = [];
             for k = subs
-%                 rt = t(c1,c2,k+1)+(1:nt);
-                data_train_c{c} = [data_train_c{c};data{c1,c2,k+1}(:,1)]; % was (rt,1)
+                rt = t(c1,c2,k+1)+(1:st);
+                data_train_c{c} = [data_train_c{c};data{c1,c2,k+1}(rt,1)]; % was (rt,1)
                 
             end
         end
@@ -178,8 +181,8 @@ if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
         for c2 = rc2
             c = c + 1; data_test{c} = [];
             for l = 1
-%                 rt = t(c1,c2,l)+(1:nt);
-                data_test{c} = [data_test{c};data{c1,c2,l}(:,1)]; % was (rt,1)
+                rt = t(c1,c2,l)+(1:st);
+                data_test{c} = [data_test{c};data{c1,c2,l}(rt,1)]; % was (rt,1)
                 test(c) = c;
             end
         end

@@ -1,22 +1,15 @@
 % AR_run_static script to run the static beam equation based classifier. Provides class
 % predictions and clocked times
 
-function [class,t_train,t_test] = AR_run_static(data_train,data_test,indRadius,indVelocity);
+function [class,t_train,t_test] = AR_run_static(data_train,data_test,indRadius,indVelocity,dset);
 
 %% TRAINING
 tic
 fprintf(' ... Training ... ')
 %% Generate protraction angle (theta) for each R-S pair
-theta = AR_ProtractionAngle;
+[theta,eCoeffs] = AR_ProtractionAngle(dset);
 
-%% Set parameter values for static beam equation
-L = 180; rbase = 1; E = 2.4; % 180, 1. 2.4/ 230, 1.2, 1.5
-Ibase = pi.*(rbase.^4);
-C = 3.*E.*(Ibase./4);
-f = 0.0031; %0.0001:0.0001:0.01; %0.0005: 0.0005: 0.005;     % Was
-%0.0031 / 0.002
 
-eCoeffs = [L E C f];
 t_train = toc;
 
 %% TESTING
