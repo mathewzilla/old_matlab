@@ -31,7 +31,7 @@ for dset = 1;% :3; other numbers don't work yet
     %% PREPROCESS DATA INTO TRAINING + TEST SETS
     smoo = 0; % smooth the data 0|1
     deriv = 0; % take first of second derivatives 0 | 1 | 2 . ATM AR_train_feat.m doesn't work with derivs
-    
+    edi
     fprintf('Preprocessing for template and feature based classifiers... \n')
     [data_train,data_train_c,data_test,indRadius,indVelocity] = AR_preprocessing(data,dset,smoo,deriv);
     % training data, concatenated training data, test data, radius of
