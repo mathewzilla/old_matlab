@@ -8,7 +8,7 @@
 clear all; clc;
 
 % load the three (not four) data sets, one at a time.
-for dset = 2;% :3; other numbers don't work yet
+for dset = 3;% :3; other numbers don't work yet
     clear data
     if dset == 1;
         fprintf('Loading XY table data\n')
