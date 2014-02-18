@@ -22,7 +22,7 @@ fprintf('Testing ... \n')
 % testing: feature classifier  ----------------------------
 clear class
 for c = 1:length(data_test);
-    class{c} = AR_test_feat(data_test{c},coeffs);
+    class{c} = AR_test_feat(data_test{c},coeffs,dset);
 end
 class = cell2mat(class);
 
@@ -30,23 +30,67 @@ radius = class(1,:);
 speed = class(2,:);
 
 %% Bound max and min of reports to reasonable values
-for i = 1:length(data_test);
-    if radius(i)<1;
-        radius(i) = 1;
+if dset == 1;
+    for i = 1:length(data_test);
+        if radius(i)<1;
+            radius(i) = 1;
+        end;
+        if radius(i)>101;
+            radius(i) = 101;
+        end;
     end;
-    if radius(i)>101;
-        radius(i) = 101;
+    
+    for i = 1:length(data_test);
+        if speed(i)<1;
+            speed(i) = 1;
+        end;
+        if speed(i)>26;
+            speed(i) = 26;
+        end;
     end;
 end;
 
-for i = 1:length(data_test);
-    if speed(i)<1;
-        speed(i) = 1;
+if dset == 2;
+    for i = 1:length(data_test);
+        if radius(i)<1;
+            radius(i) = 1;
+        end;
+        if radius(i)>3;
+            radius(i) = 3;
+        end;
     end;
-    if speed(i)>26;
-        speed(i) = 26;
+    
+    for i = 1:length(data_test);
+        if speed(i)<1;
+            speed(i) = 1;
+        end;
+        if speed(i)>3;
+            speed(i) = 3;
+        end;
     end;
 end;
+
+
+if dset == 3;
+    for i = 1:length(data_test);
+        if radius(i)<1;
+            radius(i) = 1;
+        end;
+        if radius(i)>6;
+            radius(i) = 6;
+        end;
+    end;
+    
+    for i = 1:length(data_test);
+        if speed(i)<1;
+            speed(i) = 1;
+        end;
+        if speed(i)>4;
+            speed(i) = 4;
+        end;
+    end;
+end;
+
 % --------------------------------------------------------
 class(1,:) = radius;
 class(2,:) = speed; % ONLY ONE THAT MAKES AN EXPLICIT PREDICTION OF SPEED

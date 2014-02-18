@@ -28,6 +28,20 @@ indicesR = indicesR(3,:);%,indicesR(2,:),indicesR(3,:)];
 indicesV = indicesV(3,:);%,indicesV(2,:),indicesV(3,:)];
 %% Extract features
 features = zeros(t,2);
+
+if dset == 1
+    threshold = 0.05;
+end
+
+if dset == 2
+    threshold = 0.05;
+end
+
+if dset == 3
+    threshold = 4000;
+end
+
+
 % Find peak and its height
 for i = 1: t;
     [peak ind] = max(data_train(:,i)); % used to be (:,i)
@@ -38,13 +52,13 @@ for i = 1: t;
     down = 1;
     up = 0;
     m = 1;
-    while data_train(ind+m,i)>0.05;
+    while ind+m <= s && data_train(ind+m,i)>threshold;
         down = down+1;
         m = m+1;
     end
     
     m = 1;
-    while data_train(ind-m,i)>0.05;
+    while ind-m >= 1 && data_train(ind-m,i)>threshold;
         up = up +1;
         m = m+1;
     end

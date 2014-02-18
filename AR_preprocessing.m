@@ -12,7 +12,7 @@ if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
     
     nc = nc1*nc2;      % total sample number per set - 2626
     rc = 1:nc;         % 1 to 2626
-    subs = 1:3;        % subset for training set USE crossvalind INSTEAD
+    subs = 1:3;        % subset for training set. Trial 1 will be left out. USE crossvalind INSTEAD
     
     %% onsets of contact. SEEMS REDUNDANT BUT KEEP IT AS IS USEFUL FOR OTHER SETS
     for c1 = rc1
@@ -46,7 +46,7 @@ if dset == 1; % XY table data. 4 sets, 26 speeds, 101 radii
     
     %% Separated files, not concatenated. ------
     
-    % j determines which set is left out
+    % j determines which set is left out, here trial 1 is left out
     
     for j = subs;
         c= 0;
@@ -104,7 +104,7 @@ if dset == 2; %% Scratchbot (ROBIO expts). 3 speeds, 3 radii, 8 contacts
     
     nc = nc1*nc2;      % total sample number per set - 9
     rc = 1:nc;         % 1 to 9
-    subs = 1:7;        % subset for training set
+    subs = 1:7;        % subset for training set. Trial 1 will be left out
     st = 1000;         % length of peak-aligned segment
     
     [nt(2),nn] = size(data{1,2});
@@ -195,50 +195,45 @@ if dset == 3; %% Crunchbot data. 4 whiskers, 6 radii, 5 contacts
     % WHISKERS LATER
     [nc1,nc2,ni] = size(data); [nt,nn] = size(data{1,1}); % 4,6,5 | 4000,2
     
-    ri = 1:ni;         % 1 to 5 contacts
     rc1 = 1:1:nc1;     % 1 to 4 whiskers
     rc2 = 1:1:nc2;     % 1 to 6 radii
+    ri = 1:ni;         % 1 to 5 contacts
     
     nc = nc1*nc2*ni;   % total sample number per set - 120
     rc = 1:nc;         % 1 to 120
-    subs = 1:7;        % subset for training set
-    st = 1000;         % length of peak-aligned segment
+    subs = 1:4;        % subset for training set. Trial 1 will be left out
+    st = 4000;         % length of peak-aligned segment
     
-    
-    X  = data; clear data;
-    %  for i = rc2
-    data{i,:} = [X{1,i,:};
+%     % Re-order into 
+%     X  = data; clear data;
+%     %  for i = rc2
+%     data{i,:} = [X{1,i,:}];
         
     
     for c1 = rc1
         for c2 = rc2
             for i = ri
-                t(c1,c2,i) = min(find(data{c1,c2,i}(:,1)>0.4))-100;
-                % Pad with zeros as contacts are of different lengths
-                if c2 >= 2;
-                    data{c1,c2,i}(nt(c2):nt(1)-1,:)  = zeros(nt(1)-nt(c2),2);
-                end
-
+                
                 %% OPTION: Take derivatives
                 if deriv == 1;
                     data{c1,c2,i} = diff(data{c1,c2,i});
                     data{c1,c2,i}(nt(1)-1,:) = data{c1,c2,i}(nt(1)-2,:);% Fill in missing end value
                     data{c1,c2,i}(nt(1),:) = data{c1,c2,i}(nt(1)-1,:);
                 end
-
+                
                 if deriv == 2;
                     data{c1,c2,i} = diff(diff(data{c1,c2,i}));
                     data{c1,c2,i}(nt(1)-2,:) = data{c1,c2,i}(nt(1)-3,:);% Fill in missing end value
                     data{c1,c2,i}(nt(1)-1,:) = data{c1,c2,i}(nt(1)-2,:);
                     data{c1,c2,i}(nt(1),:) = data{c1,c2,i}(nt(1)-1,:);
                 end
-
+                
                 %% OPTION: Smooth
                 if smoo == 1;
                     g = @(n,si) exp(-(-n:n).^2/(2*si^2))/sum( exp((-n:n).^2/(2*si^2)) );
                     data{c1,c2,i} = filter(g(50,15)/sum(g(50,15)),1,data{c1,c2,i});
                 end
-
+                
             end
         end
     end
@@ -252,8 +247,7 @@ if dset == 3; %% Crunchbot data. 4 whiskers, 6 radii, 5 contacts
         for c1 = rc1
             for c2 = rc2
                 c = c+1;
-                rt = t(c1,c2,j+1)+(1:st);
-                data_train{j,c} = data{c1,c2,j+1}(rt,1); % was (rt,1)
+                data_train{j,c} = data{c1,c2,j+1}(:,1);
                 indRadius(j,c) = c2;
                 indVelocity(j,c) = c1;
             end
@@ -267,8 +261,7 @@ if dset == 3; %% Crunchbot data. 4 whiskers, 6 radii, 5 contacts
         for c2 = rc2
             c = c + 1; data_train_c{c} = [];
             for k = subs
-                rt = t(c1,c2,k+1)+(1:st);
-                data_train_c{c} = [data_train_c{c};data{c1,c2,k+1}(rt,1)]; % was (rt,1)
+                data_train_c{c} = [data_train_c{c};data{c1,c2,k+1}(:,1)]; % was (rt,1)
                 
             end
         end
@@ -280,21 +273,13 @@ if dset == 3; %% Crunchbot data. 4 whiskers, 6 radii, 5 contacts
         for c2 = rc2
             c = c + 1; data_test{c} = [];
             for l = 1
-                rt = t(c1,c2,l)+(1:st);
-                data_test{c} = [data_test{c};data{c1,c2,l}(rt,1)]; % was (rt,1)
+                data_test{c} = [data_test{c};data{c1,c2,l}(:,1)]; % was (rt,1)
                 test(c) = c;
             end
         end
     end
     
-    
-    
-    
-
-
-    
 end
-
 
 
 % if dset == 4; %% Extra Scratchbot dataset

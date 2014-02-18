@@ -25,6 +25,7 @@ for dset = 3;% :3; other numbers don't work yet
         fprintf('Loading roomba data\n')
         load('AR_Data/roombaRadiusXY');   % Crunchbot.
         data = roombaRadiusXY; clear roombaRadiusXY;% 4 whiskers, 6 radii, 5 contacts
+        % NOTE: no velocity differences, but 4 separate whiskers.
     end;
     
     
