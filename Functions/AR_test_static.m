@@ -22,11 +22,11 @@ function class = AR_test_static(data,theta,eCoeffs);
   C = eCoeffs(3);
   f = eCoeffs(4); %0.0033;
 
-  F = f*(downsample(squeeze(x),10)); %0.0033 is the best
+  F = f*(downsample(squeeze(x),10)); % Set in AR_ProtractionAngle.m
 
   M = max(F); % Find the height of the deflection
 
   D = (C.*theta.*L)./((C.*theta)+(M.*L));
   
-  class = D;
+  class = round(D);
   

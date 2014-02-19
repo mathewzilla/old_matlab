@@ -10,7 +10,7 @@ Data (in own folder) consists of 4 separate sets from 3 different robots, to dat
 
 2. ScratchPeaksXY.mat - Scratchbot data. Previously published in Evans et al Frontiers in Neurorobotics 2013 and Proc. ROBIO 2010.  Cell array. 3 speeds, 3 radii, 8 contacts. Files are 2001 x 2. Probably at 1KHz (need to check)
 
-3. roombaRadiusXY.mat - Crunchbot data.   4 whiskers, 6 contacts at different radii (90-130), 5 repeats. Files are 4000 x 2 (at 1kHz). Code had to be fiddled with during the loop as some data wasn't quite in the right place. roombaRadius{3,3,5} was truncated, so filled with noise from the start of the trial
+3. roombaRadiusXY.mat - Crunchbot data.   4 whiskers, 6 contacts at different radii (90-130), 5 repeats. Files are 4000 x 2 (at 2kHz). Code had to be fiddled with during the loop as some data wasn't quite in the right place. roombaRadius{3,3,5} was truncated, so filled with noise from the start of the trial
 
 4. Collated.mat - Scratchbot data. Old 'expt1', saw/sin whisker movement, 11 radii [90-190mm], previously unpublished.
 
@@ -43,10 +43,14 @@ iii) Get other classifiers working again TICK
 
 iv) Get one classifier working on another dataset TICK
 
-v) Get all classifiers working on another dataset
+v) Get all classifiers working on another dataset TICK
 
-vi) Get all classifiers working on all datasets
+vi) Get all classifiers working on all datasets TICK
 
-vii) Publish code and data so that others can contribute classifiers
+vii) Share code/data with collaborators to add different classifiers
 
 viii) Decide on preprocessing/ data handling for paper, inc. 2 axes or just one?
+
+ix) Decide on paper figures/ figure styles and code up
+
+ix) Publish code and data with paper

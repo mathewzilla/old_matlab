@@ -6,7 +6,7 @@ sz = size(class);
 outR = zeros(1,length(indRadius));
 outV = zeros(1,length(indRadius));
 % Check if class output is actual R/V predictions
-if max(max(indVelocity)) == max(max(class));
+if max(max(indVelocity)) <= max(max(class));
     outR = class(1,:);
     outV = class(2,:);
 else

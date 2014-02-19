@@ -33,8 +33,15 @@ if dset == 1;
     class(2,:) = 13*ones(1,2626); % NO SPEED OUTPUT FOR THIS CLASSIFIER
 end
 
+if dset == 2;
 class(1,:) = class;
 class(2,:) = 2 * ones(1,9);
+end
+
+if dset == 3;
+class(1,:) = class;
+class(2,:) = 2 * ones(1,24);
+end
 t_test = toc;
 
 

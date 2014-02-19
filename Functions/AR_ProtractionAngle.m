@@ -40,7 +40,7 @@ end
 
 if dset == 2;
     % Set up parameter ranges for feeding through the trig.
-    R = [70 100 130]; % All mm along the whisker
+    R = [70 100 130]; % in mm along the whisker
     S = [2 4 6];     % Whisk speed in Hz
     theta = deg2rad(15)*ones(1,9); % From Evans et al Frontiers 2013
     %% Set parameter values for static beam equation
@@ -48,6 +48,20 @@ if dset == 2;
     Ibase = pi.*(rbase.^4);
     C = 3.*E.*(Ibase./4);
     f = 0.1;    % Back of the envelope stuff. Need to callibrate properly with data
+    
+    eCoeffs = [L E C f];
+end
+
+if dset == 3;
+    % Set up parameter ranges for feeding through the trig.
+    R = [90 100 110 120 130 140]; % in mm along the whisker
+    S = 1:4;     % whisker identity (not used)
+    theta = deg2rad(15)*ones(1,24); % From Evans et al Frontiers 2013
+    %% Set parameter values for static beam equation
+    L = 160; rbase = 1.45; E = 4.89; % Fiberglass
+    Ibase = pi.*(rbase.^4);
+    C = 3.*E.*(Ibase./4);
+    f = 0.0001;    % Back of the envelope stuff. Need to callibrate properly with data
     
     eCoeffs = [L E C f];
 end
