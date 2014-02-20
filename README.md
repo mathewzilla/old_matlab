@@ -29,6 +29,19 @@ ATM the code runs once, using an arbitrary file as the test data. Need to change
 
 Training and testing occurs, set up/called using the old code. 
 
+RESULTS: 
+Structure AR_results.mat stores all output from the 5 classifiers and 3 datasets, in the order {dataset,classifier}. Results are structured as follows;
+
+TO DO: Scale output to real-world values
+
+results.outR = radial distance classification
+results.outV = velocity classification (or whisker classification for crunchy data, will be ignored for storytelling) - Note some classifiers don't make explicit V estimates: either none is given or overall class (i.e. 1 in 2626/ 1 in 9) is used to determine V.
+results.errorR = radial distance classification error, deterimined by difference between true and estimated R
+results.errorV = velocity classification error, deterimined by difference between true and estimated V (if applicable)
+results.t_train = time (s) to train classifier
+results.t_test = time (s) to test classifier
+
+
 TO DO: This could be editted so a single classifier is called with a single script. User could then decide which classifier to try. This would return scores, times for training/testing.
     
 

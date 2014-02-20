@@ -9,7 +9,7 @@
 *.png
 *.m~
 AR_Data/
-Results/
+# Results/
 Figures/
 
 
