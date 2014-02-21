@@ -21,6 +21,28 @@ else
     end
     
 end
+
+% SCALING 
+if dset == 1;
+    scR = 79; % Scaling by shortest R
+    scRO = 1;  % Interval between Rs
+    scS = 7.2; % Scaling by speed
+    scSO = 7.2;
+end
+if dset == 2;
+    scR = 1;
+    scS = 1;
+end
+if dset == 3;
+    scR = 1;
+    scS = 1;
+end
+
+outR = outR*scO + scR;
+indRadius = indRadius + scR;
+outV = outV*scS;
+indVelocity = indVelocity*scS;
+
 errorR = outR - indRadius(1,:);
 errorV = outV - indVelocity(1,:);
 
