@@ -24,8 +24,8 @@ end
 errorR = outR - indRadius(1,:);
 errorV = outV - indVelocity(1,:);
 
-stat(1) = mean(abs(errorV)); % TO DO: Multiply by actual speed units
-stat(2) = std(abs(errorV));
-stat(3) = mean(abs(errorR));
-stat(4) = std(abs(errorR));
+stat(1) = mean(abs(errorR)); % TO DO: Multiply by actual speed units
+stat(2) = std(abs(errorR));
+stat(3) = mean(abs(errorV));
+stat(4) = std(abs(errorV));
 

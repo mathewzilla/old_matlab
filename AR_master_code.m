@@ -157,8 +157,8 @@ for dset = 1:3;% :3; other numbers don't work yet
     
 end % for all datasets
 
-savefile = 'Results/AR_Results.mat';
-save(savefile,'results')
+% savefile = 'Results/AR_Results.mat';
+% save(savefile,'results')
 
 %% TO DO Insert loop for reducing training set size
 %% Add 4th dataset
