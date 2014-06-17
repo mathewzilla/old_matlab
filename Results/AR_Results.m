@@ -1,7 +1,7 @@
 % Code for manipulating AR_Results.mat into the correct format for publication
 % Rearranges key results into tables, then prints these tables to file
 % To be called from AR_2013 master directory
-clear all
+%clear all
 load Results/AR_Results.mat
 
 %% DATASET 1 Rearrange for plotting tables
